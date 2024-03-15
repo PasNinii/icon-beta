@@ -1,4 +1,4 @@
-image_folder="./src/assets/icons"
+image_folder="./src/assets/icons/*"
 destination_path="./src/app/icons.ts"
 
 echo 'export const icons = [' > ${destination_path};\
@@ -6,3 +6,5 @@ echo 'export const icons = [' > ${destination_path};\
   >> ${destination_path}; echo '];'\
   >> ${destination_path};
 
+
+echo 'export type AppIcon = ' >> ${destination_path}; find ${image_folder} -type d | awk -F'/' '{print "\"" $5 "\"" "|" }' >> ${destination_path}; echo 'undefined;' >> ${destination_path};

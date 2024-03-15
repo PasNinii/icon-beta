@@ -1,0 +1,22 @@
+@use "@angular/material" as mat;
+@mixin _setIcon($size) {
+  width: $size;
+  height: $size;
+  flex-shrink: 0;
+}
+
+.icon-20 {
+  @include _setIcon(20px);
+}
+
+.icon-24 {
+  @include _setIcon(24px);
+}
+
+.icon-40 {
+  @include _setIcon(40px);
+}
+
+.icon-48 {
+  @include _setIcon(48px);
+}

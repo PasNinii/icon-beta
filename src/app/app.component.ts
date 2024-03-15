@@ -3,43 +3,73 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
-import { icons } from './icons';
+import { AppIcon, icons } from './icons';
+import { IconComponent } from './components/icon/icon.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MatIconModule],
+  imports: [RouterOutlet, MatIconModule, IconComponent],
   template: `
+    <style>
+      div {
+        display: flex;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        gap: 2em;
+        width: 30em;
+        margin: auto;
+        border: 1px solid #000;
+        margin-top: 2em;
+      }
+    </style>
     @for(icon of iconsAvailable;track icon) {
-      <mat-icon [svgIcon]="icon" />
-    }
+    <div>
+      @for(size of getSize(); track size) {
+      <app-icon [icon]="icon" [size]="size" />
+      }
+    </div>
 
+    }
 
     <router-outlet />
   `,
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   private readonly domSanitizer = inject(DomSanitizer);
   private readonly iconRegistry = inject(MatIconRegistry);
 
-  public readonly iconsAvailable: string[] = [];
+  public readonly iconsAvailable: AppIcon[] = [];
   public loaded = false;
 
   constructor() {
     for (const icon of icons) {
-      const iconPath = icon.split('_').join('/');
-      const iconName = icon?.split('.')[0] ?? '';
+      let iconPath: any = icon.split('_');
+      const iconSize = iconPath.pop();
+      iconPath = iconPath.join('_') + '/' + iconSize;
 
-      console.log(iconName)
-      this.iconsAvailable.push(iconName);
+      const iconName = icon.split('.')[0];
+
+      if (icon.includes('20px')) {
+        let iconsAvailable = icon?.split('_') ?? '';
+        iconsAvailable.pop();
+        this.iconsAvailable.push(iconsAvailable.join('_') as AppIcon);
+      }
 
       this.iconRegistry.addSvgIcon(
         iconName,
-        this.domSanitizer.bypassSecurityTrustResourceUrl(`assets/icons/${iconPath}`),
+        this.domSanitizer.bypassSecurityTrustResourceUrl(
+          `assets/icons/${iconPath}`
+        )
       );
     }
 
     this.loaded = true;
+  }
+
+  public getSize(): (20 | 24 | 40 | 48)[] {
+    return [48, 40, 24, 20];
   }
 }
