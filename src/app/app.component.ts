@@ -5,11 +5,12 @@ import { RouterOutlet } from '@angular/router';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { AppIcon, icons } from './icons';
 import { IconComponent } from './components/icon/icon.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MatIconModule, IconComponent],
+  imports: [RouterOutlet, MatIconModule, IconComponent, MatButtonModule],
   template: `
     <style>
       div {
@@ -24,14 +25,14 @@ import { IconComponent } from './components/icon/icon.component';
         margin-top: 2em;
       }
     </style>
-    @for(icon of iconsAvailable;track icon) {
+    <button mat-button (click)="loaded = !loaded">Load icon</button>
+    @if(loaded) { @for(icon of iconsAvailable;track icon) {
     <div>
       @for(size of getSize(); track size) {
       <app-icon [icon]="icon" [size]="size" />
       }
     </div>
-
-    }
+    } }
 
     <router-outlet />
   `,
@@ -65,8 +66,6 @@ export class AppComponent {
         )
       );
     }
-
-    this.loaded = true;
   }
 
   public getSize(): (20 | 24 | 40 | 48)[] {
