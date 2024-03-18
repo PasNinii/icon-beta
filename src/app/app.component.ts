@@ -7,6 +7,8 @@ import { AppIcon, icons } from './icons';
 import { IconComponent } from './components/icon/icon.component';
 import { MatButtonModule } from '@angular/material/button';
 import { RemoveWrapperDirective } from './diretives/remove.directive';
+import { IconTypeDirective } from './diretives/icon-type.directive';
+import { IconM3Component } from './components/icon-m3/icon-m3.component';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +16,11 @@ import { RemoveWrapperDirective } from './diretives/remove.directive';
   imports: [
     RouterOutlet,
     MatIconModule,
+    IconM3Component,
     IconComponent,
     RemoveWrapperDirective,
     MatButtonModule,
+    IconTypeDirective,
   ],
   template: `
     <style>
@@ -32,15 +36,21 @@ import { RemoveWrapperDirective } from './diretives/remove.directive';
         margin-top: 2em;
       }
     </style>
+
     <div>
       <button mat-button (click)="loaded = !loaded">
         Load icon
         <app-icon remove-wrapper [icon]="'search'" [size]="20" matButtonIcon />
       </button>
+      <button mat-button (click)="loaded = !loaded">
+        Load icon
+        <app-icon-m3 [icon]="'search'" [size]="20" matButtonIcon />
+      </button>
     </div>
     @if(loaded) { @for(icon of iconsAvailable;track icon) {
     <div>
       @for(size of getSize(); track size) {
+      <app-icon-m3 [icon]="icon" [size]="size" />
       <app-icon [icon]="icon" [size]="size" />
       }
     </div>
