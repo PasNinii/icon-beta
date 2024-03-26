@@ -2,7 +2,7 @@
 px=(20 24 40 48)
 icon=$1
 path=$(pwd)
-google_link="https://fonts.google.com/specimen/Material+Icons+Outlined?query=material+icons+outlined"
+google_link="https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined"
 
 for i in "${px[@]}"
 do
